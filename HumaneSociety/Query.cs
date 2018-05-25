@@ -17,76 +17,79 @@ namespace HumaneSociety
 
         static public void RunEmployeeQueries(Employee employee, string crud)
         {
-
+            //create
+            //read
+            //update
+            //delete
         }
         static public Client GetClient(string username, string password)
         {
-            Client client = new Client(); // write query to return an instance of client
-            return client;
+            //input username and password
+            //return client
         }
 
         internal static object GetUserAdoptionStatus(Client client)
         {
-            throw new NotImplementedException();
+            //get client return adoption
         }
 
         internal static object GetAnimalByID(int iD)
         {
-            throw new NotImplementedException();
+            //search query for ID return animal object
         }
 
         internal static void Adopt(object animal, Client client)
         {
-            throw new NotImplementedException();
+            //search for animal, search for client, assign animal to client, change adopted status on animal to adopted
         }
 
         internal static object RetrieveClients()
         {
-            throw new NotImplementedException();
+           return //list of clients
         }
 
         internal static object GetStates()
         {
-            throw new NotImplementedException();
+          //return list of all states
         }
 
         internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int state)
         {
-            throw new NotImplementedException();
+            //add element to database using firstname, lastname, username, password, email, street adress, zipcode, state
         }
 
         internal static void updateClient(Client client)
         {
-            throw new NotImplementedException();
+            //replace current client with client passed through
         }
 
-        internal static void UpdateUsername(Client client)
+        internal static void UpdateUsername(Client client) //figure out how to use delegates for employee and customer : INotifyPropertyChange
         {
-            throw new NotImplementedException();
+           
         }
 
-        internal static void UpdateEmail(Client client)
+        internal static void UpdateEmail(Client client)//figure out how to use delegates for employee and customer : INotifyPropertyChange
         {
-            throw new NotImplementedException();
+            
         }
 
-        internal static void UpdateAddress(Client client)
+        internal static void UpdateAddress(Client client) //try to make one update method
         {
-            throw new NotImplementedException();
+            
         }
 
-        internal static void UpdateFirstName(Client client)
+        internal static void UpdateFirstName(Client client) //try to make one update method
         {
-            throw new NotImplementedException();
+           
         }
 
-        internal static void UpdateLastName(Client client)
+        internal static void UpdateLastName(Client client) //try to make one update method
         {
-            throw new NotImplementedException();
+           
         }
-        internal static object GetPendingAdoptions()
+        internal static object GetPendingAdoptions() 
         {
-            throw new NotImplementedException();
+            //return all animals with a pending adoption
         }
 
         internal static void UpdateAdoption(bool v, ClientAnimalJunction clientAnimalJunction)
