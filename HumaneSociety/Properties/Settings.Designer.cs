@@ -37,8 +37,8 @@ namespace HumaneSociety.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-5CVCB9U;Initial Catalog=HumaneSociety;Integrated Security=Tru" +
-            "e;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=TABLET;Initial Catalog=HumaneSociety;Integrated Security=True;Connect" +
+            " Timeout=30;Encrypt=False;TrustServerCertificate=False")]
         public string HumaneSocietyConnectionString1 {
             get {
                 return ((string)(this["HumaneSocietyConnectionString1"]));
