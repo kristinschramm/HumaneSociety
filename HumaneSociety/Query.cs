@@ -6,15 +6,9 @@ using System.Threading.Tasks;
 
 namespace HumaneSociety
 {
+    
     public static class Query
     {
-
-        //member variables
-
-        //constructor
-
-        //member method
-
         static public void RunEmployeeQueries(Employee employee, string crud)
         {
             //create
@@ -22,30 +16,46 @@ namespace HumaneSociety
             //update
             //delete
         }
+
         static public Client GetClient(string username, string password)
         {
             //input username and password
             //return client
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var client = (from user in db.Clients where user.userName == username && user.pass == password select user).ToList();
+            return (Client)client[0];
         }
 
         internal static object GetUserAdoptionStatus(Client client)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //get client return adoption
+            var approvalStatus = (
+                from foo in db.ClientAnimalJunctions
+                from c in db.Clients
+                where client.ID == c.ID
+                select foo.approvalStatus
+                ).ToString();
+            return approvalStatus;
         }
 
         internal static object GetAnimalByID(int iD)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //search query for ID return animal object
+
         }
 
         internal static void Adopt(object animal, Client client)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //search for animal, search for client, assign animal to client, change adopted status on animal to adopted
         }
 
         internal static object RetrieveClients()
         {
-           return //list of clients
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            //return //list of clients
         }
 
         internal static object GetStates()
