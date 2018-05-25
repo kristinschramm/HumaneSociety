@@ -23,7 +23,7 @@ namespace HumaneSociety
             //return client
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var client = (from user in db.Clients where user.userName == username && user.pass == password select user).ToList();
-            return (Client)client[0];
+            return client[0];
         }
 
         internal static object GetUserAdoptionStatus(Client client)
@@ -41,26 +41,50 @@ namespace HumaneSociety
 
         internal static object GetAnimalByID(int iD)
         {
+            //need method to loop through Animal objects??
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //search query for ID return animal object
-
+            var animalObject = (
+                from animal in db.Animals
+                where iD == animal.ID
+                select animal
+                );
+                return animalObject;
         }
 
         internal static void Adopt(object animal, Client client)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //search for animal, search for client, assign animal to client, change adopted status on animal to adopted
+            var newlyAdopted = (
+                from newFamily in db.ClientAnimalJunctions
+                where client.ID == newFamily.Client1.ID
+                    && animal.ID == newFamily.Animal1.ID
+                select newFamily
+                ).ToList();
+            //^^^this is terribly wrong ***************************
         }
 
         internal static object RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //return //list of clients
+            var clientList = (
+                from allClients in db.Clients
+                select allClients
+                ).ToList();
+            return clientList;
         }
 
         internal static object GetStates()
         {
-          //return list of all states
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            //return list of all states
+            var allStates = (
+                from states in db.USStates
+                select states
+                ).ToList();
+            return allStates;
         }
 
         internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int state)
