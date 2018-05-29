@@ -22,6 +22,8 @@ CREATE TABLE Clients (ID INTEGER IDENTITY (1,1) PRIMARY KEY, firstName VARCHAR(5
 CREATE TABLE ClientAnimalJunctions (client INTEGER FOREIGN KEY REFERENCES Clients(ID), animal INTEGER FOREIGN KEY REFERENCES Animals(ID) CONSTRAINT ClientAnimalKey PRIMARY KEY (client, animal)); 
 CREATE TABLE Employees (ID INTEGER IDENTITY (1,1) PRIMARY KEY, firsttName VARCHAR(50), lastName VARCHAR(50), userName VARCHAR(50), pass VARCHAR(50), employeeNumber INTEGER, email VARCHAR(50));
 
+INSERT INTO Employees Values( 'admin', 'admin', 'admin', 'password', '11111', 'admin@email.com');
+
 INSERT INTO USStates Values('Alabama','AL');
 INSERT INTO USStates Values('Alaska','AK');
 INSERT INTO USStates Values('Arizona','AZ');
@@ -74,7 +76,6 @@ INSERT INTO USStates Values('West Virgina','WV');
 INSERT INTO USStates Values('Wisconsin','WI');
 INSERT INTO USStates Values('Wyoming','WY');
 
-INSERT INTO Shots (name) VALUES ('booster');
 
 ALTER TABLE Animals ADD demeanor VARCHAR(50);
 ALTER TABLE Animals ADD kidFriendly BIT;
@@ -86,3 +87,4 @@ ALTER TABLE Clients ADD income INTEGER;
 ALTER TABLE Clients ADD kids INTEGER; 
 ALTER TABLE Clients ADD homeSize INTEGER;
 ALTER TABLE ClientAnimalJunctions ADD approvalStatus VARCHAR(50);
+
