@@ -134,7 +134,6 @@ namespace HumaneSociety
             List<string> info = new List<string>() {"ID: " + animal.ID, animal.name, animal.age + "years old", "Demeanour: " + animal.demeanor, "Kid friendly: " + BoolToYesNo(animal.kidFriendly), "pet friendly: " + BoolToYesNo(animal.petFriendly), $"Location: {animal.Room.name} in {animal.Room.building}", "Weight: " + animal.weight.ToString(),  "Food amount:" + animal.DietPlan.amount};
             DisplayUserOptions(info);
             Console.ReadLine();
-
         }
 
         private static string BoolToYesNo(bool? input)

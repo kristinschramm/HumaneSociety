@@ -59,11 +59,11 @@ namespace HumaneSociety
         }
 
         public static Animal GetAnimalByID(int iD)
+
         {
-            //need method to loop through Animal objects??
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //search query for ID return animal object
-            var animalObject = (
+             var animalObject = (
                 from animal in db.Animals
                 where iD == animal.ID
                 select animal
@@ -75,7 +75,6 @@ namespace HumaneSociety
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //search for animal, search for client, assign animal to client, change adopted status on animal to pending approval
-
             var newApplicant = (
                 from newlyApplied in db.ClientAnimalJunctions
                 where client.ID == newlyApplied.Client1.ID
@@ -141,7 +140,7 @@ namespace HumaneSociety
             
         }
 
-        internal static void updateClient(Client client)
+        internal static void UpdateClient(Client client)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var searchClients = (
