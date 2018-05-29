@@ -81,36 +81,37 @@ namespace HumaneSociety
                 where client.ID == newlyApplied.Client1.ID
                     && animal.ID == newlyApplied.Animal1.ID
                 select newlyApplied
-                ).ToList();
+                );
             foreach(ClientAnimalJunction newlyAdopted in newApplicant)
             {
                 newlyAdopted.approvalStatus = "pending";
-            }  
+            }
+            db.SubmitChanges();
         }
 
-        public static IEnumerable<Client> RetrieveClients()
+        public static IQueryable<Client> RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //return //list of clients
-            var clientList = (
+            var clientQuery = (
                 from allClients in db.Clients
                 select allClients
-                ).ToList();
-            return clientList;
+                );
+            return clientQuery;
         }
 
-        public static IEnumerable<USState> GetStates()
+        public static IQueryable<USState> GetStates()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //return list of all states
             var allStates = (
                 from name in db.USStates
                 select name
-                ).ToList();
+                );
             return allStates;
         }
 
-        internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateID)
+        public static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateID)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             Client client = new Client();
@@ -137,38 +138,33 @@ namespace HumaneSociety
             client.userAddress = userAddress[0].ID;
             db.Clients.InsertOnSubmit(client);
             db.SubmitChanges();
-
+            
         }
 
         internal static void updateClient(Client client)
         {
-            //replace current client with client passed through
-        }
-
-        internal static void UpdateUsername(Client client) //figure out how to use delegates for employee and customer : INotifyPropertyChange
-        {
-           
-        }
-
-        internal static void UpdateEmail(Client client)//figure out how to use delegates for employee and customer : INotifyPropertyChange
-        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var searchClients = (
+                from searchClient in db.Clients
+                where searchClient.ID == client.ID
+                select searchClient);
+            foreach (Client searchClient in searchClients)
+            {
+                searchClient.email = client.email;
+                searchClient.firstName = client.firstName;
+                searchClient.homeSize = client.homeSize;
+                searchClient.income = client.income;
+                searchClient.kids = client.kids;
+                searchClient.lastName = client.lastName;
+                searchClient.pass = client.pass;
+                searchClient.userAddress = client.userAddress;
+                searchClient.userName = client.userName;
+            }
             
+            db.SubmitChanges();
+            Console.WriteLine("Changes Submitted");
         }
-
-        internal static void UpdateAddress(Client client) //try to make one update method
-        {
-            
-        }
-
-        internal static void UpdateFirstName(Client client) //try to make one update method
-        {
-           
-        }
-
-        internal static void UpdateLastName(Client client) //try to make one update method
-        {
-           
-        }
+               
         internal static IEnumerable<ClientAnimalJunction> GetPendingAdoptions() 
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();

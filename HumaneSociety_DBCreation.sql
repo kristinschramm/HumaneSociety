@@ -88,3 +88,10 @@ ALTER TABLE Clients ADD kids INTEGER;
 ALTER TABLE Clients ADD homeSize INTEGER;
 ALTER TABLE ClientAnimalJunctions ADD approvalStatus VARCHAR(50);
 
+USE [HumaneSociety]
+GO
+Insert INTO Animals Values ( 'Roscoe', 2 , 30, 2, NULL, NULl, NULL, NULL, NULL);
+Insert INTO Animals Values ( 'Guinness', 9 , 55, 8,NULL, NULl, NULL, NULL, NULL);
+Insert INTO Animals Values ( 'Jake', 8 , 15, 3, NULL, NULl, NULL, NULL, NULL);
+Insert INTO Animals Values ( 'Trouble', 6 , 6, 1, NULL, NULL, NULL, NULL, NULL);
+Insert INTO Animals Values ( 'Hops', 10 , 3, 4, NULL, NULL, NULL, NULL, NULL);
