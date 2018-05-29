@@ -140,7 +140,7 @@ namespace HumaneSociety
         {
             if(client.homeSize == null || client.kids == null || client.income == null)
             {
-                UserInterface.DisplayUserOptions("Account not up to date would you like to update your account?");
+                UserInterface.DisplayUserOptions("Account not complete, would you like to update your account?");
                 string input = UserInterface.GetUserInput();
                 if (input == "yes" || input == "y")
                 {
@@ -156,14 +156,14 @@ namespace HumaneSociety
         }
         public static string GetUserName()
         {
-            UserInterface.DisplayUserOptions("Please enter a username");
+            UserInterface.DisplayUserOptions("Please enter a username:");
             string username = UserInterface.GetUserInput();
             var clients = Query.RetrieveClients();
             var clientUsernames = from client in clients select client.userName;
             if (CheckForForValue(clientUsernames.ToList(), username))
             {
                 Console.Clear();
-                UserInterface.DisplayUserOptions("Username already in use please try another username");
+                UserInterface.DisplayUserOptions("Username already in use, please try another username.");
                 return GetUserName();
             }
             return username;
@@ -226,7 +226,7 @@ namespace HumaneSociety
             else
             {
                 Console.Clear();
-                UserInterface.DisplayUserOptions("State not Found");
+                UserInterface.DisplayUserOptions("State not found, please enter US State.");
                 return GetState();
             }
         }
@@ -241,17 +241,17 @@ namespace HumaneSociety
                 Console.Clear();
                 UserInterface.DisplayUserOptions("Please enter password (Warning password is CaSe SeNsItIvE)");
                 string password = UserInterface.GetUserInput();
-                UserInterface.DisplayUserOptions("Enter your first name.");
+                UserInterface.DisplayUserOptions("Enter your first name:");
                 string firstName = UserInterface.GetUserInput();
-                UserInterface.DisplayUserOptions("Enter your last name.");
+                UserInterface.DisplayUserOptions("Enter your last name:");
                 string lastName = UserInterface.GetUserInput();
                 int zipCode = GetZipCode();
                 int state = GetState();
-                UserInterface.DisplayUserOptions("Please enter your street address");
+                UserInterface.DisplayUserOptions("Please enter your street address:");
                 string streetAddress = UserInterface.GetUserInput();
                 Query.AddNewClient(firstName, lastName, username, password, email, streetAddress, zipCode, state);
                 Console.Clear();
-                UserInterface.DisplayUserOptions("Profile successfully added");
+                UserInterface.DisplayUserOptions("Profile successfully added.");
                 return true;
             }
             catch
@@ -270,13 +270,13 @@ namespace HumaneSociety
                 if (CheckForForValue(clientUsernames.ToList(), username))
                 {
                     Console.Clear();
-                    UserInterface.DisplayUserOptions("Username already in use please try another username");
+                    UserInterface.DisplayUserOptions("Username already in use, please try another username.");
                     return CreateClient(clients);
                 }
                 else if (CheckForForValue(clientEmails.ToList(), email))
                 {
                     Console.Clear();
-                    UserInterface.DisplayUserOptions("Email already in use please try another email or contact support for forgotten account info");
+                    UserInterface.DisplayUserOptions("Email already in use, please try another email or contact support for forgotten account info.");
                     return CreateClient(clients);
                 }
                 else
@@ -306,7 +306,7 @@ namespace HumaneSociety
         }
         public void UpdateClientInfo()
         {
-            List<string> options = new List<string>() { "What would you like to update? (Please enter number of option)", "1: Name", "2: Address", "3: Email", "4: Username", "5: Password", "6: Income", "7: Kids", "8: Home Size", "9. back" };
+            List<string> options = new List<string>() { "What would you like to update? (Please enter number of option)", "1: Name", "2: Address", "3: Email", "4: Username", "5: Password", "6: Income", "7: Kids", "8: Home Size", "9. Back" };
             int input = default(int);
             while (input != 9)
             {
@@ -361,6 +361,7 @@ namespace HumaneSociety
         private void UpdateHomeSize()
         {
             Console.Clear();
+            Console.WriteLine($"Your current home size is: {client.homeSize}");
             UserInterface.DisplayUserOptions("What is your home size? (small, medium, large)");
             string input = UserInterface.GetUserInput();
             switch (input)
@@ -413,7 +414,7 @@ namespace HumaneSociety
             Console.Clear();
             UserInterface.DisplayUserOptions("Current Username: " + client.userName);
             client.userName = GetUserName();
-            Query.UpdateUsername(client);
+            Query.UpdateClient(client);
         }
 
         private void UpdateEmail()
@@ -421,7 +422,7 @@ namespace HumaneSociety
             Console.Clear();
             UserInterface.DisplayUserOptions("Current email: " + client.email);
             client.email = GetEmail();
-            Query.UpdateEmail(client);
+            Query.UpdateClient(client);
         }
 
         public int GetZipCode()
@@ -454,7 +455,7 @@ namespace HumaneSociety
             client.UserAddress1.USStates = GetState();
             UserInterface.DisplayUserOptions("Please enter your street address");
             client.UserAddress1.addessLine1 = UserInterface.GetUserInput();
-            Query.UpdateAddress(client);
+            Query.UpdateClient(client);
 
         }
         public void UpdateName()
@@ -467,23 +468,22 @@ namespace HumaneSociety
             {
                 UserInterface.DisplayUserOptions("Please enter your new first name.");
                 client.firstName = UserInterface.GetUserInput();
-                Query.UpdateFirstName(client);
+                Query.UpdateClient(client);
 
             }
             else if (input == "last" || input == "2")
             {
                 UserInterface.DisplayUserOptions("Please enter your new last name.");
                 client.lastName = UserInterface.GetUserInput();
-                Query.UpdateLastName(client);
+                Query.UpdateClient(client);
             }
             else
             {
                 UserInterface.DisplayUserOptions("Please enter your new first name.");
                 client.firstName = UserInterface.GetUserInput();
-                Query.UpdateFirstName(client);
                 UserInterface.DisplayUserOptions("Please enter your new last name.");
                 client.lastName = UserInterface.GetUserInput();
-                Query.UpdateLastName(client);
+                Query.UpdateClient(client);
             }
         }
     }
