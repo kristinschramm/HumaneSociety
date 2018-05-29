@@ -11,13 +11,15 @@ namespace HumaneSociety
     {
         static public IEnumerable<Employee> RunEmployeeQueries(Employee employee, string crud)
         {
+            Action<string> stringToVoidDelegate;
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
            
             var employeeSearch = (
                 from employeeObject in db.Employees
                 where employee.ID == employeeObject.ID
-                select employeeObject).ToList();          
-                      
+                select employeeObject).ToList();
+
+            //stringToVoidDelegate = DoCrud;
             switch (crud)
             {
                 case "create":
@@ -38,7 +40,11 @@ namespace HumaneSociety
 
         }
 
-        
+        private static void DoCrud(string obj)
+        {
+           //blaaaaaaaaaaaaaaaaaaaaaaaahhhhh
+        }
+
         public static Client GetClient(string username, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -59,7 +65,6 @@ namespace HumaneSociety
         }
 
         public static Animal GetAnimalByID(int iD)
-
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //search query for ID return animal object
@@ -186,7 +191,7 @@ namespace HumaneSociety
             throw new NotImplementedException();
         }
 
-        public static IEnumerable<AnimalShotJunction> GetShots(Animal animal)
+        public static IQueryable<AnimalShotJunction> GetShots(Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var animalID =(
@@ -197,9 +202,29 @@ namespace HumaneSociety
             return animalID;
         }
 
+        public static IQueryable<int> FindShotId(string v)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var shotId = (
+                from shots in db.Shots
+                where v.ToLower() == shots.name.ToLower()
+                select shots.ID
+                );
+            return shotId;
+        }
+
         internal static void UpdateShot(string v, Animal animal)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var shotUpdate = (
+                from update in db.AnimalShotJunctions
+                where animal.ID == update.Animal_ID //&& update.Shot_ID == shotId
+                select update
+                );
+            foreach(AnimalShotJunction updates in shotUpdate)
+            {
+                updates.dateRecieved = DateTime.Now;
+            }
         }
 
         internal static void EnterUpdate(Animal animal, Dictionary<int, string> updates)
@@ -234,21 +259,35 @@ namespace HumaneSociety
 
         internal static Employee EmployeeLogin(string userName, string password)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var employee = (
+                from validEmployee in db.Employees
+                where validEmployee.userName == userName && validEmployee.pass == password
+                select validEmployee
+            ).ToList();
+            return employee[0];
         }
 
         internal static Employee RetrieveEmployeeUser(string email, int employeeNumber)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var employee = (
+                from emp in db.Employees
+                where emp.email == email && emp.employeeNumber == employeeNumber
+                select emp
+            ).ToList();
+            return employee[0];
         }
 
         internal static void AddUsernameAndPassword(Employee employee)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            
         }
 
         internal static bool CheckEmployeeUserNameExist(string username)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             throw new NotImplementedException();
         }
     }
