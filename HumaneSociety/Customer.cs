@@ -205,6 +205,7 @@ namespace HumaneSociety
             UserInterface.DisplayUserOptions("Please enter your state (abbreviation or full state name");
             string state = UserInterface.GetUserInput();
             var states = Query.GetStates();
+            
             var stateNames = from territory in states select territory.name.ToLower();
             var stateAbrreviations = from territory in states select territory.abbrev;
             if (stateNames.ToList().Contains(state.ToLower()) || stateAbrreviations.ToList().Contains(state.ToUpper()))
@@ -366,15 +367,15 @@ namespace HumaneSociety
             {
                 case "small":
                     client.homeSize = 1;
-                    Query.updateClient(client);
+                    Query.UpdateClient(client);
                     break;
                 case "medium":
                     client.homeSize = 2;
-                    Query.updateClient(client);
+                    Query.UpdateClient(client);
                     break;
                 case "large":
                     client.homeSize = 3;
-                    Query.updateClient(client);
+                    Query.UpdateClient(client);
                     break;
                 default:
                     UserInterface.DisplayUserOptions("Incorrect Input type please enter small, medium, or large");
@@ -388,14 +389,14 @@ namespace HumaneSociety
             Console.Clear();
             UserInterface.DisplayUserOptions("How many childern are in your household?");
             client.kids = UserInterface.GetIntegerData();
-            Query.updateClient(client);
+            Query.UpdateClient(client);
         }
 
         private void UpdateIncome()
         {
             UserInterface.DisplayUserOptions("What is your household income? (If you would like to omit it enter 0)");
             client.income = UserInterface.GetIntegerData();
-            Query.updateClient(client);
+            Query.UpdateClient(client);
         }
 
         private void UpdatePassword()
@@ -404,7 +405,7 @@ namespace HumaneSociety
             Console.Clear();
             UserInterface.DisplayUserOptions("Current Password: " + client.pass + " What is your new Password?");
             client.pass = UserInterface.GetUserInput();
-            Query.updateClient(client);
+            Query.UpdateClient(client);
         }
 
         private void UpdateUsername()

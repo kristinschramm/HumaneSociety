@@ -35,37 +35,39 @@ namespace HumaneSociety
                 from c in db.Clients
                 where client.ID == c.ID
                 select foo.approvalStatus
-                ).ToString();
+                );
             return approvalStatus;
         }
 
-        internal static object GetAnimalByID(int iD)
+        internal static Animal GetAnimalByID(int iD)
         {
-            //need method to loop through Animal objects??
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //search query for ID return animal object
-            var animalObject = (
+             var animalObject = (
                 from animal in db.Animals
                 where iD == animal.ID
                 select animal
-                );
-                return animalObject;
+                ).ToList();
+                return animalObject[0];
         }
 
-        internal static void Adopt(object animal, Client client)
+        internal static void Adopt(Animal animal, Client client)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            //search for animal, search for client, assign animal to client, change adopted status on animal to adopted
-            var newlyAdopted = (
-                from newFamily in db.ClientAnimalJunctions
-                where client.ID == newFamily.Client1.ID
-                    && animal.ID == newFamily.Animal1.ID
-                select newFamily
+            //search for animal, search for client, assign animal to client, change aprroval status on animal to adopted
+            var newApplicant = (
+                from newlyApplied in db.ClientAnimalJunctions
+                where client.ID == newlyApplied.Client1.ID
+                    && animal.ID == newlyApplied.Animal1.ID
+                select newlyApplied
                 ).ToList();
-            //^^^this is terribly wrong ***************************
+            foreach(ClientAnimalJunction spokenFor in newApplicant)
+            {
+                spokenFor.approvalStatus = "pending";
+            }
         }
 
-        internal static object RetrieveClients()
+        internal static IEnumerable<Client> RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //return //list of clients
@@ -76,14 +78,14 @@ namespace HumaneSociety
             return clientList;
         }
 
-        internal static object GetStates()
+        public static IEnumerable<USState> GetStates()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //return list of all states
             var allStates = (
                 from states in db.USStates
                 select states
-                ).ToList();
+                );
             return allStates;
         }
 
@@ -92,7 +94,7 @@ namespace HumaneSociety
             //add element to database using firstname, lastname, username, password, email, street adress, zipcode, state
         }
 
-        internal static void updateClient(Client client)
+        internal static void UpdateClient(Client client)
         {
             //replace current client with client passed through
         }
@@ -121,9 +123,10 @@ namespace HumaneSociety
         {
            
         }
-        internal static object GetPendingAdoptions() 
+        internal static void GetPendingAdoptions()
         {
             //return all animals with a pending adoption
+
         }
 
         internal static void UpdateAdoption(bool v, ClientAnimalJunction clientAnimalJunction)
