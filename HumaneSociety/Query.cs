@@ -9,37 +9,56 @@ namespace HumaneSociety
     
     public static class Query
     {
-        static public void RunEmployeeQueries(Employee employee, string crud)
+        static public IEnumerable<Employee> RunEmployeeQueries(Employee employee, string crud)
         {
-            //create
-            //read
-            //update
-            //delete
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+           
+            var employeeSearch = (
+                from employeeObject in db.Employees
+                where employee.ID == employeeObject.ID
+                select employeeObject).ToList();          
+                      
+            switch (crud)
+            {
+                case "create":
+                    db.Employees.InsertOnSubmit(employee);
+                    break;
+                case "read":
+                    break;
+                case "update":
+                    employeeSearch[0] = employee;
+                    break;
+                case "delete":
+                    db.Employees.DeleteOnSubmit(employee);                
+                    break;
+                                           
+            }
+            db.SubmitChanges();
+            return employeeSearch;
+
         }
 
-        static public Client GetClient(string username, string password)
+        
+        public static Client GetClient(string username, string password)
         {
-            //input username and password
-            //return client
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var client = (from user in db.Clients where user.userName == username && user.pass == password select user).ToList();
             return client[0];
         }
 
-        internal static object GetUserAdoptionStatus(Client client)
+        public static IEnumerable<ClientAnimalJunction> GetUserAdoptionStatus(Client client) // this is the format we need to be using
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //get client return adoption
             var approvalStatus = (
-                from foo in db.ClientAnimalJunctions
-                from c in db.Clients
-                where client.ID == c.ID
-                select foo.approvalStatus
-                ).ToString();
-            return approvalStatus;
+                from junction in db.ClientAnimalJunctions
+                where junction.client == client.ID
+                select junction
+                );
+                return approvalStatus;
         }
 
-        internal static object GetAnimalByID(int iD)
+        public static Animal GetAnimalByID(int iD)
         {
             //need method to loop through Animal objects??
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -48,24 +67,28 @@ namespace HumaneSociety
                 from animal in db.Animals
                 where iD == animal.ID
                 select animal
-                );
-                return animalObject;
+                ).ToList();
+            return animalObject[0];
         }
 
-        internal static void Adopt(object animal, Client client)
+        public static void Adopt(Animal animal, Client client) 
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            //search for animal, search for client, assign animal to client, change adopted status on animal to adopted
-            var newlyAdopted = (
-                from newFamily in db.ClientAnimalJunctions
-                where client.ID == newFamily.Client1.ID
-                    && animal.ID == newFamily.Animal1.ID
-                select newFamily
+            //search for animal, search for client, assign animal to client, change adopted status on animal to pending approval
+
+            var newApplicant = (
+                from newlyApplied in db.ClientAnimalJunctions
+                where client.ID == newlyApplied.Client1.ID
+                    && animal.ID == newlyApplied.Animal1.ID
+                select newlyApplied
                 ).ToList();
-            //^^^this is terribly wrong ***************************
+            foreach(ClientAnimalJunction newlyAdopted in newApplicant)
+            {
+                newlyAdopted.approvalStatus = "pending";
+            }  
         }
 
-        internal static object RetrieveClients()
+        public static IEnumerable<Client> RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //return //list of clients
@@ -76,20 +99,45 @@ namespace HumaneSociety
             return clientList;
         }
 
-        internal static object GetStates()
+        public static IEnumerable<USState> GetStates()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             //return list of all states
             var allStates = (
-                from states in db.USStates
-                select states
+                from name in db.USStates
+                select name
                 ).ToList();
             return allStates;
         }
 
-        internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int state)
+        internal static void AddNewClient(string firstName, string lastName, string username, string password, string email, string streetAddress, int zipCode, int stateID)
         {
-            //add element to database using firstname, lastname, username, password, email, street adress, zipcode, state
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            Client client = new Client();
+            client.firstName = firstName;
+            client.lastName = lastName;
+            client.userName = username;
+            client.pass = password;
+            client.email = email;
+            UserAddress address = new UserAddress();
+            address.addessLine1 = streetAddress;
+            address.zipcode = zipCode;
+            var userState = (
+                from state in db.USStates
+                where state.ID == stateID
+                select state
+                ).ToList();                
+            address.USState = userState[0];
+            db.UserAddresses.InsertOnSubmit(address);
+            db.SubmitChanges();
+            var userAddress = (
+                from addresses in db.UserAddresses
+                where streetAddress == address.addessLine1
+                select address).ToList();
+            client.userAddress = userAddress[0].ID;
+            db.Clients.InsertOnSubmit(client);
+            db.SubmitChanges();
+
         }
 
         internal static void updateClient(Client client)
@@ -121,9 +169,17 @@ namespace HumaneSociety
         {
            
         }
-        internal static object GetPendingAdoptions() 
+        internal static IEnumerable<ClientAnimalJunction> GetPendingAdoptions() 
         {
-            //return all animals with a pending adoption
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            //search for animal, search for client, assign animal to client, change adopted status on animal to pending approval
+
+            var pendingApplicant = (
+                from newlyApplied in db.ClientAnimalJunctions
+                where newlyApplied.approvalStatus == "pending" 
+                select newlyApplied
+                );
+            return pendingApplicant;
         }
 
         internal static void UpdateAdoption(bool v, ClientAnimalJunction clientAnimalJunction)
@@ -131,9 +187,15 @@ namespace HumaneSociety
             throw new NotImplementedException();
         }
 
-        internal static object GetShots(Animal animal)
+        public static IEnumerable<AnimalShotJunction> GetShots(Animal animal)
         {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var animalID =(
+                from animalSearch in db.AnimalShotJunctions
+                where animal.ID == animalSearch.Animal_ID
+                select animalSearch
+                );
+            return animalID;
         }
 
         internal static void UpdateShot(string v, Animal animal)
