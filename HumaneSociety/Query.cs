@@ -107,6 +107,7 @@ namespace HumaneSociety
             ClientAnimalJunction clientAnimal = new ClientAnimalJunction();
             clientAnimal.animal = animal.ID; 
             clientAnimal.client = client.ID;
+            clientAnimal.approvalStatus = clientAnimal.Animal1.adoptionStatus;
             db.ClientAnimalJunctions.InsertOnSubmit(clientAnimal);
             db.SubmitChanges();
             Console.WriteLine("Your application has been received.");
