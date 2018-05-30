@@ -48,31 +48,31 @@ namespace HumaneSociety
         public static Client GetClient(string username, string password)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var client = (from user in db.Clients where user.userName == username && user.pass == password select user).ToList();
+            var client = (
+                from user in db.Clients
+                where user.userName == username && user.pass == password
+                select user
+                ).ToList();
             return client[0];
         }
 
-        public static IEnumerable<ClientAnimalJunction> GetUserAdoptionStatus(Client client) // this is the format we need to be using
+        public static IQueryable<ClientAnimalJunction> GetUserAdoptionStatus(Client client) // this is the format we need to be using
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            //get client return adoption
             var approvalStatus = (
                 from junction in db.ClientAnimalJunctions
                 where junction.client == client.ID
-                select junction
-                );
-                return approvalStatus;
+                select junction);
+            return approvalStatus;
         }
 
         public static Animal GetAnimalByID(int iD)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            //search query for ID return animal object
-             var animalObject = (
+            var animalObject = (
                 from animal in db.Animals
                 where iD == animal.ID
-                select animal
-                ).ToList();
+                select animal).ToList();
             return animalObject[0];
         }
 
@@ -91,22 +91,18 @@ namespace HumaneSociety
         public static IQueryable<Client> RetrieveClients()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            //return //list of clients
             var clientQuery = (
                 from allClients in db.Clients
-                select allClients
-                );
-            return clientQuery;
+                select allClients);
+                return clientQuery;
         }
 
         public static IQueryable<USState> GetStates()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            //return list of all states
             var allStates = (
                 from name in db.USStates
-                select name
-                );
+                select name);
             return allStates;
         }
 
@@ -133,14 +129,14 @@ namespace HumaneSociety
             var userAddress = (
                 from addresses in db.UserAddresses
                 where streetAddress == address.addessLine1
-                select address).ToList();
+                select address
+                ).ToList();
             client.userAddress = userAddress[0].ID;
             db.Clients.InsertOnSubmit(client);
-            db.SubmitChanges();
-            
+            db.SubmitChanges();            
         }
 
-        internal static void UpdateClient(Client client)
+        public static void UpdateClient(Client client)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var searchClients = (
@@ -158,27 +154,24 @@ namespace HumaneSociety
                 searchClient.pass = client.pass;
                 searchClient.userAddress = client.userAddress;
                 searchClient.userName = client.userName;
-            }
-            
+            }            
             db.SubmitChanges();
             Console.WriteLine("Changes Submitted");
         }
                
-        internal static IEnumerable<ClientAnimalJunction> GetPendingAdoptions() 
+        public static IQueryable<ClientAnimalJunction> GetPendingAdoptions() 
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            //search for animal, search for client, assign animal to client, change adopted status on animal to pending approval
-
             var pendingApplicant = (
                 from newlyApplied in db.ClientAnimalJunctions
-                where newlyApplied.approvalStatus == "pending" 
-                select newlyApplied
-                );
+                where newlyApplied.approvalStatus == "pending"
+                select newlyApplied);
             return pendingApplicant;
         }
 
         internal static void UpdateAdoption(bool v, ClientAnimalJunction clientAnimalJunction)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             throw new NotImplementedException();
         }
 
@@ -220,32 +213,65 @@ namespace HumaneSociety
 
         internal static void EnterUpdate(Animal animal, Dictionary<int, string> updates)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             throw new NotImplementedException();
         }
 
         internal static void RemoveAnimal(Animal animal)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             throw new NotImplementedException();
         }
 
-        internal static int? GetBreed()
+        public static int GetBreed(string breedString, string patternString)
         {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var breedQueries = (
+                from breedQuery in db.Breeds
+                where breedString == breedQuery.breed1 && patternString == breedQuery.pattern
+                select breedQuery).ToList();
+            if (breedQueries.Count.Equals(0))
+            {
+                Breed breed = new Breed();
+                breed.breed1 = breedString;
+                breed.pattern = patternString;
+                db.Breeds.InsertOnSubmit(breed);
+                db.SubmitChanges();
+                GetBreed(breedString, patternString);
+            }
+            return breedQueries[0].ID;
+        }
+
+        public static int GetDiet(string foodString, int dietAmount)
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            var dietQueries = (
+                from dietQuery in db.DietPlans
+                where foodString == dietQuery.food && dietAmount == dietQuery.amount
+                select dietQuery).ToList();
+            if (dietQueries.Count.Equals(0))
+            {
+                DietPlan dietplan = new DietPlan();
+                dietplan.food = foodString;
+                dietplan.amount = dietAmount;
+                db.DietPlans.InsertOnSubmit(dietplan);
+                db.SubmitChanges();
+                GetDiet(foodString, dietAmount);
+            }
+            return dietQueries[0].ID;
+        }
+
+        public static int GetLocation()
+        {
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             throw new NotImplementedException();
         }
 
-        internal static int? GetDiet()
+        public static void AddAnimal(Animal animal)
         {
-            throw new NotImplementedException();
-        }
-
-        internal static int? GetLocation()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal static void AddAnimal(Animal animal)
-        {
-            throw new NotImplementedException();
+            HumaneSocietyDataContext db = new HumaneSocietyDataContext();
+            db.Animals.InsertOnSubmit(animal);
+            db.SubmitChanges();
         }
 
         internal static Employee EmployeeLogin(string userName, string password)
