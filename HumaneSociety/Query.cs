@@ -196,12 +196,27 @@ namespace HumaneSociety
         internal static void UpdateAdoption(bool v, ClientAnimalJunction clientAnimalJunction)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            
             var updateStatus = (
                 from pendingAdoptions in db.ClientAnimalJunctions
                 where pendingAdoptions.approvalStatus == "pending"
-                select pendingAdoptions.Animal1
-                );
+                select pendingAdoptions
+                ).ToList();
+            if (v == true)
+            {
+                foreach (ClientAnimalJunction nowAdopted in updateStatus)
+                {
+                    nowAdopted.Animal1.adoptionStatus = "adopted";
+                    nowAdopted.approvalStatus = "approved";
+                }
+            }
+            else
+            {
+                foreach (ClientAnimalJunction doNotAllow in updateStatus)
+                {
+                    doNotAllow.Animal1.adoptionStatus = "available";
+                    doNotAllow.approvalStatus = "not approved";
+                }
+            }
         }
 
         public static IQueryable<AnimalShotJunction> GetShots(Animal animal)
@@ -243,7 +258,9 @@ namespace HumaneSociety
         internal static void EnterUpdate(Animal animal, Dictionary<int, string> updates)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            throw new NotImplementedException();
+
+            db.SubmitChanges();
+
         }
 
         internal static void RemoveAnimal(Animal animal)

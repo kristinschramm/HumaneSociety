@@ -110,7 +110,7 @@ namespace HumaneSociety
                 List<string> options = new List<string>() { "Select Search Criteia: (Enter number and choose finished when finished)", "1. Category", "2. Breed", "3. Name", "4. Age", "5. Demeanor", "6. Kid friendly", "7. Pet friendly", "8. Weight","9. ID", "10. Finished" };
                 UserInterface.DisplayUserOptions(options);
                 string input = UserInterface.GetUserInput();
-                if (input.ToLower() == "10" || input.ToLower() == "finished")
+                if (input.ToLower() == "9" || input.ToLower() == "finished")
                 {
                     isSearching = false;
                     continue;
