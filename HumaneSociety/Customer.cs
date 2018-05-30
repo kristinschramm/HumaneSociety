@@ -112,6 +112,7 @@ namespace HumaneSociety
             {
                 Query.Adopt(animal, client);
                 UserInterface.DisplayUserOptions("Adoption request sent we will hold $75 adoption fee until processed");
+                Console.ReadKey();
             }
         }
 
@@ -361,7 +362,6 @@ namespace HumaneSociety
         private void UpdateHomeSize()
         {
             Console.Clear();
-            Console.WriteLine($"Your current home size is: {client.homeSize}");
             UserInterface.DisplayUserOptions("What is your home size? (small, medium, large)");
             string input = UserInterface.GetUserInput();
             switch (input)

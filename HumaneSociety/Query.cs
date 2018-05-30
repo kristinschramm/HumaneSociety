@@ -79,18 +79,13 @@ namespace HumaneSociety
         public static void Adopt(Animal animal, Client client) 
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            //search for animal, search for client, assign animal to client, change adopted status on animal to pending approval
-            var newApplicant = (
-                from newlyApplied in db.ClientAnimalJunctions
-                where client.ID == newlyApplied.Client1.ID
-                    && animal.ID == newlyApplied.Animal1.ID
-                select newlyApplied
-                );
-            foreach(ClientAnimalJunction newlyAdopted in newApplicant)
-            {
-                newlyAdopted.approvalStatus = "pending";
-            }
+            animal.adoptionStatus = "pending";
+            ClientAnimalJunction clientAnimal = new ClientAnimalJunction();
+            clientAnimal.animal = animal.ID; 
+            clientAnimal.client = client.ID;
+            db.ClientAnimalJunctions.InsertOnSubmit(clientAnimal);
             db.SubmitChanges();
+            Console.WriteLine("Your application has been received.");
         }
 
         public static IQueryable<Client> RetrieveClients()
