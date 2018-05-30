@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace HumaneSociety
 {
@@ -266,7 +267,6 @@ namespace HumaneSociety
             db.Animals.DeleteOnSubmit(animalQuery[0]);
             db.SubmitChanges();
         }
-
         public static int GetBreed(string breedString, string patternString)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -285,7 +285,6 @@ namespace HumaneSociety
             }
             return breedQueries[0].ID;
         }
-
         public static int GetDiet(string foodString, int dietAmount)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
@@ -369,6 +368,12 @@ namespace HumaneSociety
                 ).ToList();
             if (doesUserExist.Count == 0) { return false; }
             else { return true; }
+        }
+
+        public static void uploadCSVFile()
+        {
+            
+
         }
     }
 }
