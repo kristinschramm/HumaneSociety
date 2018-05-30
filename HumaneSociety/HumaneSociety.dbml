@@ -1,25 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="HumaneSociety" Class="HumaneSocietyDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Table Name="dbo.Animals" Member="Animals">
-    <Type Name="Animal">
+  <Table Name="dbo.USStates" Member="USStates">
+    <Type Name="USState">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="breed" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="weight" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="age" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="diet" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="location" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="demeanor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="kidFriendly" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="petFriendly" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="gender" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="adoptionStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Employee_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="Animal_AnimalShotJunction" Member="AnimalShotJunctions" ThisKey="ID" OtherKey="Animal_ID" Type="AnimalShotJunction" />
-      <Association Name="Animal_ClientAnimalJunction" Member="ClientAnimalJunctions" ThisKey="ID" OtherKey="animal" Type="ClientAnimalJunction" />
-      <Association Name="Breed_Animal" Member="Breed1" ThisKey="breed" OtherKey="ID" Type="Breed" IsForeignKey="true" />
-      <Association Name="DietPlan_Animal" Member="DietPlan" ThisKey="diet" OtherKey="ID" Type="DietPlan" IsForeignKey="true" />
-      <Association Name="Employee_Animal" Member="Employee" ThisKey="Employee_ID" OtherKey="ID" Type="Employee" IsForeignKey="true" />
-      <Association Name="Room_Animal" Member="Room" ThisKey="location" OtherKey="ID" Type="Room" IsForeignKey="true" />
+      <Column Name="abbrev" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="USState_UserAddress" Member="UserAddresses" ThisKey="ID" OtherKey="USStates" Type="UserAddress" />
     </Type>
   </Table>
   <Table Name="dbo.AnimalShotJunctions" Member="AnimalShotJunctions">
@@ -27,8 +12,8 @@
       <Column Name="Animal_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Shot_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="dateRecieved" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Association Name="Animal_AnimalShotJunction" Member="Animal" ThisKey="Animal_ID" OtherKey="ID" Type="Animal" IsForeignKey="true" />
       <Association Name="Shot_AnimalShotJunction" Member="Shot" ThisKey="Shot_ID" OtherKey="ID" Type="Shot" IsForeignKey="true" />
+      <Association Name="Animal_AnimalShotJunction" Member="Animal" ThisKey="Animal_ID" OtherKey="ID" Type="Animal" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Breeds" Member="Breeds">
@@ -53,8 +38,8 @@
       <Column Name="client" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="animal" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="approvalStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Association Name="Animal_ClientAnimalJunction" Member="Animal1" ThisKey="animal" OtherKey="ID" Type="Animal" IsForeignKey="true" />
       <Association Name="Client_ClientAnimalJunction" Member="Client1" ThisKey="client" OtherKey="ID" Type="Client" IsForeignKey="true" />
+      <Association Name="Animal_ClientAnimalJunction" Member="Animal1" ThisKey="animal" OtherKey="ID" Type="Animal" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Clients" Member="Clients">
@@ -69,7 +54,6 @@
       <Column Name="income" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="kids" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="homeSize" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="paidAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Client_ClientAnimalJunction" Member="ClientAnimalJunctions" ThisKey="ID" OtherKey="client" Type="ClientAnimalJunction" />
       <Association Name="UserAddress_Client" Member="UserAddress1" ThisKey="userAddress" OtherKey="ID" Type="UserAddress" IsForeignKey="true" />
     </Type>
@@ -121,12 +105,27 @@
       <Association Name="USState_UserAddress" Member="USState" ThisKey="USStates" OtherKey="ID" Type="USState" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.USStates" Member="USStates">
-    <Type Name="USState">
+  <Table Name="dbo.Animals" Member="Animals">
+    <Type Name="Animal">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="abbrev" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
-      <Association Name="USState_UserAddress" Member="UserAddresses" ThisKey="ID" OtherKey="USStates" Type="UserAddress" />
+      <Column Name="breed" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="weight" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="age" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="diet" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="location" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="demeanor" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="kidFriendly" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="petFriendly" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="gender" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="adoptionStatus" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Employee_ID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Animal_AnimalShotJunction" Member="AnimalShotJunctions" ThisKey="ID" OtherKey="Animal_ID" Type="AnimalShotJunction" />
+      <Association Name="Animal_ClientAnimalJunction" Member="ClientAnimalJunctions" ThisKey="ID" OtherKey="animal" Type="ClientAnimalJunction" />
+      <Association Name="Breed_Animal" Member="Breed1" ThisKey="breed" OtherKey="ID" Type="Breed" IsForeignKey="true" />
+      <Association Name="DietPlan_Animal" Member="DietPlan" ThisKey="diet" OtherKey="ID" Type="DietPlan" IsForeignKey="true" />
+      <Association Name="Employee_Animal" Member="Employee" ThisKey="Employee_ID" OtherKey="ID" Type="Employee" IsForeignKey="true" />
+      <Association Name="Room_Animal" Member="Room" ThisKey="location" OtherKey="ID" Type="Room" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>
