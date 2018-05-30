@@ -85,9 +85,9 @@ namespace HumaneSociety
             {
                 Employee employee = new Employee();
                 employee.employeeNumber = int.Parse(UserInterface.GetStringData("employee number", "the employee's"));
-                Query.RunEmployeeQueries(employee, "read");
+                employee = Query.RunEmployeeQueries(employee, "read");
                 Console.WriteLine($"Employee Number: {employee.employeeNumber}");
-                Console.WriteLine($"Employee Name :{employee.firsttName} {employee.lastName}");
+                Console.WriteLine($"Employee Name : {employee.firsttName} {employee.lastName}");
                 Console.WriteLine($"Employee Email : {employee.email}");
             }
             catch
@@ -129,9 +129,10 @@ namespace HumaneSociety
                 Query.RunEmployeeQueries(employee, "create");
                 UserInterface.DisplayUserOptions("Employee addition successful.");
             }
-            catch
+            catch(Exception e)
             {
-                Console.Clear();
+                Console.WriteLine(e.StackTrace);
+                //Console.Clear();
                 UserInterface.DisplayUserOptions("Employee addition unsuccessful please try again or type exit;");
                 return;
             }

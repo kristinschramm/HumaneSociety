@@ -9,40 +9,64 @@ namespace HumaneSociety
     
     public static class Query
     {
-        static public IEnumerable<Employee> RunEmployeeQueries(Employee employee, string crud)
+        public delegate Employee employeeDelegate(HumaneSocietyDataContext db, Employee employee);
+        static public Employee RunEmployeeQueries(Employee employee, string crud)
         {
-            Action<string> stringToVoidDelegate;
+            employeeDelegate employeeDelegate;
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-           
+
+                switch (crud)
+                {
+                    case "create":
+                        employeeDelegate = Create;
+                        employeeDelegate(db, employee);
+                        break;
+                    case "read":
+                        employeeDelegate = Read;
+                        employee = employeeDelegate(db, employee);
+                    break;
+                    case "update":
+                        employeeDelegate = Update;
+                        employeeDelegate(db, employee);
+                        break;
+                    case "delete":
+                        employeeDelegate = Delete;
+                        employeeDelegate(db, employee);
+                    break;
+                }
+
+            db.SubmitChanges();
+            return employee;
+        }
+        public static Employee Create(HumaneSocietyDataContext db, Employee employee)
+        {
+            db.Employees.InsertOnSubmit(employee);
+            return employee;
+        }
+        public static Employee Read(HumaneSocietyDataContext db, Employee employee)
+        {
+            var employeeSearch = (
+                from employeeObject in db.Employees
+                where employee.employeeNumber == employeeObject.employeeNumber
+                select employeeObject).ToList();
+            return employeeSearch[0];
+        }
+        public static Employee Update(HumaneSocietyDataContext db, Employee employee)
+        {
             var employeeSearch = (
                 from employeeObject in db.Employees
                 where employee.ID == employeeObject.ID
                 select employeeObject).ToList();
-
-            //stringToVoidDelegate = DoCrud;
-            switch (crud)
-            {
-                case "create":
-                    db.Employees.InsertOnSubmit(employee);
-                    break;
-                case "read":
-                    break;
-                case "update":
-                    employeeSearch[0] = employee;
-                    break;
-                case "delete":
-                    db.Employees.DeleteOnSubmit(employee);                
-                    break;
-                                           
-            }
-            db.SubmitChanges();
-            return employeeSearch;
-
+            return employeeSearch[0];
         }
-
-        private static void DoCrud(string obj)
+        public static Employee Delete(HumaneSocietyDataContext db, Employee employee)
         {
-           //blaaaaaaaaaaaaaaaaaaaaaaaahhhhh
+            var employeeSearch = (
+                from employeeObject in db.Employees
+                where employee.employeeNumber == employeeObject.employeeNumber && employee.lastName == employeeObject.lastName
+                select employeeObject).ToList();
+            db.Employees.DeleteOnSubmit(employeeSearch[0]);
+            return employee;
         }
 
         public static Client GetClient(string username, string password)
@@ -278,13 +302,29 @@ namespace HumaneSociety
         internal static void AddUsernameAndPassword(Employee employee)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            
+            var updateLogin = (
+                from employeeToChange in db.Employees
+                where employeeToChange.ID == employee.ID
+                select employeeToChange);
+            foreach (Employee employeeToChange in updateLogin)
+            {
+                employeeToChange.userName = employee.userName;
+                employeeToChange.pass = employee.pass;
+            }
+            db.SubmitChanges();
         }
+
 
         internal static bool CheckEmployeeUserNameExist(string username)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            throw new NotImplementedException();
+            var doesUserExist = (
+                from validUsers in db.Employees
+                where username == validUsers.userName
+                select validUsers
+                ).ToList();
+            if (doesUserExist.Count == 0) { return false; }
+            else { return true; }
         }
     }
 }
