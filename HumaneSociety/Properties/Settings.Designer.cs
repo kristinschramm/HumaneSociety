@@ -50,7 +50,9 @@ namespace HumaneSociety.Properties {
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-5CVCB9U;Initial Catalog=HumaneSociety;Integrated Security=Tru" +
             "e")]
+
         //[global::System.Configuration.DefaultSettingValueAttribute("Data Source=Tablet;Initial Catalog=HumaneSociety;Integrated Security=True")]
+
         public string HumaneSocietyConnectionString2 {
             get {
                 return ((string)(this["HumaneSocietyConnectionString2"]));

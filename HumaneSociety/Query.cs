@@ -106,6 +106,7 @@ namespace HumaneSociety
             ClientAnimalJunction clientAnimal = new ClientAnimalJunction();
             clientAnimal.animal = animal.ID; 
             clientAnimal.client = client.ID;
+            clientAnimal.approvalStatus = clientAnimal.Animal1.adoptionStatus;
             db.ClientAnimalJunctions.InsertOnSubmit(clientAnimal);
             db.SubmitChanges();
             Console.WriteLine("Your application has been received.");
@@ -248,7 +249,22 @@ namespace HumaneSociety
         internal static void RemoveAnimal(Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            throw new NotImplementedException();
+            var animalQuery = (
+                from animalQueries in db.Animals
+                where animalQueries.ID == animal.ID
+                select animalQueries).ToList();
+            var animalClientQuery = (
+                from animalClientQueries in db.ClientAnimalJunctions
+                where animalClientQueries.animal == animal.ID
+                select animalClientQueries).ToList();
+            var roomQuery = (
+                from roomQueries in db.Rooms
+                where animal.Room == roomQueries
+                select roomQueries).ToList();
+            roomQuery[0].occupied = false;
+            db.ClientAnimalJunctions.DeleteOnSubmit(animalClientQuery[0]);
+            db.Animals.DeleteOnSubmit(animalQuery[0]);
+            db.SubmitChanges();
         }
 
         public static int GetBreed(string breedString, string patternString)
@@ -258,7 +274,7 @@ namespace HumaneSociety
                 from breedQuery in db.Breeds
                 where breedString == breedQuery.breed1 && patternString == breedQuery.pattern
                 select breedQuery).ToList();
-            if (breedQueries.Count.Equals(0))
+            if (breedQueries.Count == 0)
             {
                 Breed breed = new Breed();
                 breed.breed1 = breedString;
@@ -277,23 +293,27 @@ namespace HumaneSociety
                 from dietQuery in db.DietPlans
                 where foodString == dietQuery.food && dietAmount == dietQuery.amount
                 select dietQuery).ToList();
-            if (dietQueries.Count.Equals(0))
+            if (dietQueries.Count == 0)
             {
                 DietPlan dietplan = new DietPlan();
                 dietplan.food = foodString;
                 dietplan.amount = dietAmount;
                 db.DietPlans.InsertOnSubmit(dietplan);
                 db.SubmitChanges();
-                GetDiet(foodString, dietAmount);
                 dietQueries.Add(dietplan);
             }
             return dietQueries[0].ID;
         }
 
-        public static int GetLocation()
+        public static int GetLocation(string AnimalType)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            throw new NotImplementedException();
+            var locationQuery = (
+                from locationQueries in db.Rooms
+                where locationQueries.name == AnimalType && locationQueries.occupied==null
+                select locationQueries).ToList();
+            locationQuery[0].occupied = true;
+            return locationQuery[0].ID;
         }
 
         public static void AddAnimal(Animal animal)

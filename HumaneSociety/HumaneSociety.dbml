@@ -23,6 +23,16 @@
       <Association Name="Room_Animal" Member="Room" ThisKey="location" OtherKey="ID" Type="Room" IsForeignKey="true" />
     </Type>
   </Table>
+
+  <Table Name="dbo.USStates" Member="USStates">
+    <Type Name="USState">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="abbrev" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="USState_UserAddress" Member="UserAddresses" ThisKey="ID" OtherKey="USStates" Type="UserAddress" />
+    </Type>
+  </Table>
+
   <Table Name="dbo.AnimalShotJunctions" Member="AnimalShotJunctions">
     <Type Name="AnimalShotJunction">
       <Column Name="Animal_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -99,6 +109,7 @@
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="building" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="occupied" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Association Name="Room_Animal" Member="Animals" ThisKey="ID" OtherKey="location" Type="Animal" />
     </Type>
   </Table>
@@ -118,14 +129,6 @@
       <Column Name="USStates" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="UserAddress_Client" Member="Clients" ThisKey="ID" OtherKey="userAddress" Type="Client" />
       <Association Name="USState_UserAddress" Member="USState" ThisKey="USStates" OtherKey="ID" Type="USState" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.USStates" Member="USStates">
-    <Type Name="USState">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="abbrev" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
-      <Association Name="USState_UserAddress" Member="UserAddresses" ThisKey="ID" OtherKey="USStates" Type="UserAddress" />
     </Type>
   </Table>
 </Database>
