@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><Database Name="HumaneSociety" Class="HumaneSocietyDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-5CVCB9U;Initial Catalog=HumaneSociety;Integrated Security=True;Encrypt=False;TrustServerCertificate=True" SettingsObjectName="HumaneSociety.Properties.Settings" SettingsPropertyName="HumaneSocietyConnectionString" Provider="System.Data.SqlClient" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="HumaneSociety" Class="HumaneSocietyDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Table Name="dbo.Animals" Member="Animals">
     <Type Name="Animal">
       <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -23,16 +22,6 @@
       <Association Name="Room_Animal" Member="Room" ThisKey="location" OtherKey="ID" Type="Room" IsForeignKey="true" />
     </Type>
   </Table>
-
-  <Table Name="dbo.USStates" Member="USStates">
-    <Type Name="USState">
-      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="abbrev" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
-      <Association Name="USState_UserAddress" Member="UserAddresses" ThisKey="ID" OtherKey="USStates" Type="UserAddress" />
-    </Type>
-  </Table>
-
   <Table Name="dbo.AnimalShotJunctions" Member="AnimalShotJunctions">
     <Type Name="AnimalShotJunction">
       <Column Name="Animal_ID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -80,6 +69,7 @@
       <Column Name="income" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="kids" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="homeSize" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="paidAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Client_ClientAnimalJunction" Member="ClientAnimalJunctions" ThisKey="ID" OtherKey="client" Type="ClientAnimalJunction" />
       <Association Name="UserAddress_Client" Member="UserAddress1" ThisKey="userAddress" OtherKey="ID" Type="UserAddress" IsForeignKey="true" />
     </Type>
@@ -129,6 +119,14 @@
       <Column Name="USStates" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="UserAddress_Client" Member="Clients" ThisKey="ID" OtherKey="userAddress" Type="Client" />
       <Association Name="USState_UserAddress" Member="USState" ThisKey="USStates" OtherKey="ID" Type="USState" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.USStates" Member="USStates">
+    <Type Name="USState">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="name" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="abbrev" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Association Name="USState_UserAddress" Member="UserAddresses" ThisKey="ID" OtherKey="USStates" Type="UserAddress" />
     </Type>
   </Table>
 </Database>
