@@ -256,7 +256,8 @@ namespace HumaneSociety
             string dietFood = UserInterface.GetStringData("type of food", "the animal's");
             int dietAmount = UserInterface.GetIntegerData("the amount", "the food");
             animal.diet = Query.GetDiet(dietFood, dietAmount);
-            animal.location = Query.GetLocation();
+            string animalType = UserInterface.GetStringData("species", "the animal's");
+            animal.location = Query.GetLocation(animalType);
             Query.AddAnimal(animal);
         }
         protected override void LogInPreExistingUser()
