@@ -78,6 +78,7 @@ INSERT INTO USStates Values('Wyoming','WY');
 
 USE [HumaneSociety]
 GO
+ALTER TABLE Rooms ADD occupied bit
 
 ALTER TABLE Animals ADD demeanor VARCHAR(50);
 ALTER TABLE Animals ADD kidFriendly BIT;
