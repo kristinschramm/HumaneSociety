@@ -34,7 +34,6 @@ namespace HumaneSociety
                         employeeDelegate(db, employee);
                     break;
                 }
-
             db.SubmitChanges();
             return employee;
         }
@@ -196,7 +195,12 @@ namespace HumaneSociety
         internal static void UpdateAdoption(bool v, ClientAnimalJunction clientAnimalJunction)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            throw new NotImplementedException();
+            
+            var updateStatus = (
+                from pendingAdoptions in db.ClientAnimalJunctions
+                where pendingAdoptions.approvalStatus == "pending"
+                select pendingAdoptions.Animal1
+                );
         }
 
         public static IQueryable<AnimalShotJunction> GetShots(Animal animal)
@@ -261,7 +265,7 @@ namespace HumaneSociety
                 breed.pattern = patternString;
                 db.Breeds.InsertOnSubmit(breed);
                 db.SubmitChanges();
-                GetBreed(breedString, patternString);
+                breedQueries.Add(breed);
             }
             return breedQueries[0].ID;
         }
@@ -281,6 +285,7 @@ namespace HumaneSociety
                 db.DietPlans.InsertOnSubmit(dietplan);
                 db.SubmitChanges();
                 GetDiet(foodString, dietAmount);
+                dietQueries.Add(dietplan);
             }
             return dietQueries[0].ID;
         }
@@ -334,8 +339,6 @@ namespace HumaneSociety
             }
             db.SubmitChanges();
         }
-
-
         internal static bool CheckEmployeeUserNameExist(string username)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();

@@ -84,7 +84,7 @@ namespace HumaneSociety
             UserInterface.DisplayAnimalInfo(clientAnimalJunction.Animal1);
             UserInterface.DisplayClientInfo(clientAnimalJunction.Client1);
             UserInterface.DisplayUserOptions("Would you approve this adoption?");
-            if ((bool)UserInterface.GetBitData())
+            if (UserInterface.GetBitData())
             {
                 Query.UpdateAdoption(true, clientAnimalJunction);
             }
