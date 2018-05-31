@@ -20,11 +20,11 @@ namespace HumaneSociety
             List<string> options = new List<string>() { "Are you a new User?", "yes", "no" };
             UserInterface.DisplayUserOptions(options);
             string input = UserInterface.GetUserInput();
-            if(input.ToLower() == "yes" || input.ToLower() == "y")
+            if (input.ToLower() == "yes" || input.ToLower() == "y")
             {
                 return true;
             }
-            else if(input.ToLower() == "no" || input.ToLower() == "n")
+            else if (input.ToLower() == "no" || input.ToLower() == "n")
             {
                 return false;
             }
@@ -107,7 +107,7 @@ namespace HumaneSociety
             while (isSearching)
             {
                 Console.Clear();
-                List<string> options = new List<string>() { "Select Search Criteia: (Enter number and choose finished when finished)", "1. Category", "2. Breed", "3. Name", "4. Age", "5. Demeanor", "6. Kid friendly", "7. Pet friendly", "8. Weight","9. ID", "10. Finished" };
+                List<string> options = new List<string>() { "Select Search Criteia: (Enter number and choose finished when finished)", "1. Category", "2. Breed", "3. Name", "4. Age", "5. Demeanor", "6. Kid friendly", "7. Pet friendly", "8. Weight", "9. ID", "10. Finished" };
                 UserInterface.DisplayUserOptions(options);
                 string input = UserInterface.GetUserInput();
                 if (input.ToLower() == "9" || input.ToLower() == "finished")

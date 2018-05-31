@@ -26,36 +26,11 @@ namespace HumaneSociety.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.;Initial Catalog=HumaneSociety;Integrated Security=True;Encrypt=Fals" +
-            "e;TrustServerCertificate=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=TABLET;Initial Catalog=HumaneSociety;Integrated Security=True;Connect" +
+            " Timeout=30;Encrypt=False;TrustServerCertificate=False")]
         public string HumaneSocietyConnectionString {
             get {
                 return ((string)(this["HumaneSocietyConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=TABLET;Initial Catalog=HumaneSociety;Integrated Security=True;Connect" +
-            " Timeout=30;Encrypt=False;TrustServerCertificate=False")]
-        public string HumaneSocietyConnectionString1 {
-            get {
-                return ((string)(this["HumaneSocietyConnectionString1"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DESKTOP-5CVCB9U;Initial Catalog=HumaneSociety;Integrated Security=Tru" +
-            "e")]
-
-        //[global::System.Configuration.DefaultSettingValueAttribute("Data Source=Tablet;Initial Catalog=HumaneSociety;Integrated Security=True")]
-
-        public string HumaneSocietyConnectionString2 {
-            get {
-                return ((string)(this["HumaneSocietyConnectionString2"]));
             }
         }
     }

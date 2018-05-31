@@ -7,7 +7,6 @@ using System.IO;
 
 namespace HumaneSociety
 {
-    
     public static class Query
     {
         public delegate Employee employeeDelegate(HumaneSocietyDataContext db, Employee employee);
@@ -16,25 +15,25 @@ namespace HumaneSociety
             employeeDelegate employeeDelegate;
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
 
-                switch (crud)
-                {
-                    case "create":
-                        employeeDelegate = Create;
-                        employeeDelegate(db, employee);
-                        break;
-                    case "read":
-                        employeeDelegate = Read;
-                        employee = employeeDelegate(db, employee);
+            switch (crud)
+            {
+                case "create":
+                    employeeDelegate = Create;
+                    employeeDelegate(db, employee);
                     break;
-                    case "update":
-                        employeeDelegate = Update;
-                        employeeDelegate(db, employee);
-                        break;
-                    case "delete":
-                        employeeDelegate = Delete;
-                        employeeDelegate(db, employee);
+                case "read":
+                    employeeDelegate = Read;
+                    employee = employeeDelegate(db, employee);
                     break;
-                }
+                case "update":
+                    employeeDelegate = Update;
+                    employeeDelegate(db, employee);
+                    break;
+                case "delete":
+                    employeeDelegate = Delete;
+                    employeeDelegate(db, employee);
+                    break;
+            }
             db.SubmitChanges();
             return employee;
         }
@@ -100,12 +99,12 @@ namespace HumaneSociety
             return animalObject[0];
         }
 
-        public static void Adopt(Animal animal, Client client) 
+        public static void Adopt(Animal animal, Client client)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             animal.adoptionStatus = "pending";
             ClientAnimalJunction clientAnimal = new ClientAnimalJunction();
-            clientAnimal.animal = animal.ID; 
+            clientAnimal.animal = animal.ID;
             clientAnimal.client = client.ID;
             clientAnimal.approvalStatus = clientAnimal.Animal1.adoptionStatus;
             db.ClientAnimalJunctions.InsertOnSubmit(clientAnimal);
@@ -119,7 +118,7 @@ namespace HumaneSociety
             var clientQuery = (
                 from allClients in db.Clients
                 select allClients);
-                return clientQuery;
+            return clientQuery;
         }
 
         public static IQueryable<USState> GetStates()
@@ -147,7 +146,7 @@ namespace HumaneSociety
                 from state in db.USStates
                 where state.ID == stateID
                 select state
-                ).ToList();                
+                ).ToList();
             address.USState = userState[0];
             db.UserAddresses.InsertOnSubmit(address);
             db.SubmitChanges();
@@ -158,7 +157,7 @@ namespace HumaneSociety
                 ).ToList();
             client.userAddress = userAddress[0].ID;
             db.Clients.InsertOnSubmit(client);
-            db.SubmitChanges();            
+            db.SubmitChanges();
         }
 
         public static void UpdateClient(Client client)
@@ -179,12 +178,12 @@ namespace HumaneSociety
                 searchClient.pass = client.pass;
                 searchClient.userAddress = client.userAddress;
                 searchClient.userName = client.userName;
-            }            
+            }
             db.SubmitChanges();
             Console.WriteLine("Changes Submitted");
         }
-               
-        public static IQueryable<ClientAnimalJunction> GetPendingAdoptions() 
+
+        public static IQueryable<ClientAnimalJunction> GetPendingAdoptions()
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var pendingApplicant = (
@@ -223,7 +222,7 @@ namespace HumaneSociety
         public static IQueryable<AnimalShotJunction> GetShots(Animal animal)
         {
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
-            var animalID =(
+            var animalID = (
                 from animalSearch in db.AnimalShotJunctions
                 where animal.ID == animalSearch.Animal_ID
                 select animalSearch
@@ -250,7 +249,7 @@ namespace HumaneSociety
                 where animal.ID == update.Animal_ID //&& update.Shot_ID == shotId
                 select update
                 );
-            foreach(AnimalShotJunction updates in shotUpdate)
+            foreach (AnimalShotJunction updates in shotUpdate)
             {
                 updates.dateRecieved = DateTime.Now;
             }
@@ -326,7 +325,7 @@ namespace HumaneSociety
             HumaneSocietyDataContext db = new HumaneSocietyDataContext();
             var locationQuery = (
                 from locationQueries in db.Rooms
-                where locationQueries.name == AnimalType && locationQueries.occupied==null
+                where locationQueries.name == AnimalType && locationQueries.occupied == null
                 select locationQueries).ToList();
             locationQuery[0].occupied = true;
             return locationQuery[0].ID;
@@ -385,12 +384,6 @@ namespace HumaneSociety
                 ).ToList();
             if (doesUserExist.Count == 0) { return false; }
             else { return true; }
-        }
-
-        public static void uploadCSVFile()
-        {
-            
-
         }
     }
 }

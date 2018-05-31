@@ -10,7 +10,7 @@ namespace HumaneSociety
     {
         public static void DisplayUserOptions(List<string> options)
         {
-            foreach(string option in options)
+            foreach (string option in options)
             {
                 Console.WriteLine(option);
             }
@@ -86,7 +86,7 @@ namespace HumaneSociety
 
         internal static void DisplayAnimals(List<Animal> animals)
         {
-            foreach(Animal animal in animals)
+            foreach (Animal animal in animals)
             {
                 Console.WriteLine(animal.ID + " " + animal.name + " " + animal.Breed1.breed1);
             }
@@ -131,7 +131,7 @@ namespace HumaneSociety
 
         public static void DisplayAnimalInfo(Animal animal)
         {
-            List<string> info = new List<string>() {"ID: " + animal.ID, animal.name, animal.age + "years old", "Demeanour: " + animal.demeanor, "Kid friendly: " + BoolToYesNo(animal.kidFriendly), "pet friendly: " + BoolToYesNo(animal.petFriendly), $"Location: {animal.Room.name} in {animal.Room.building}", "Weight: " + animal.weight.ToString(),  "Food amount:" + animal.DietPlan.amount};
+            List<string> info = new List<string>() { "ID: " + animal.ID, animal.name, animal.age + "years old", "Demeanour: " + animal.demeanor, "Kid friendly: " + BoolToYesNo(animal.kidFriendly), "pet friendly: " + BoolToYesNo(animal.petFriendly), $"Location: {animal.Room.name} in {animal.Room.building}", "Weight: " + animal.weight.ToString(), "Food amount:" + animal.DietPlan.amount };
             DisplayUserOptions(info);
             Console.ReadLine();
         }

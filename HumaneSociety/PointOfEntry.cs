@@ -27,8 +27,8 @@ namespace HumaneSociety
                 case "customer":
                     customer = new Customer();
                     customer.LogIn();
-                     break;
-                case"2":
+                    break;
+                case "2":
                     customer = new Customer();
                     customer.LogIn();
                     break;

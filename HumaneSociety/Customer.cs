@@ -50,7 +50,7 @@ namespace HumaneSociety
             UserInterface.DisplayUserOptions(options);
             int input = UserInterface.GetIntegerData();
             RunUserInput(input);
-            
+
         }
 
         private void RunUserInput(int input)
@@ -81,7 +81,7 @@ namespace HumaneSociety
 
         private void CheckAdoptionStatus()
         {
-            
+
             var pendingAdoptions = Query.GetUserAdoptionStatus(client).ToList();
             if (pendingAdoptions.Count == 0) //need delegate here
             {
@@ -90,7 +90,7 @@ namespace HumaneSociety
             else
             {
                 List<string> Adoptions = new List<string>();
-                foreach(ClientAnimalJunction junction in pendingAdoptions)
+                foreach (ClientAnimalJunction junction in pendingAdoptions)
                 {
                     Adoptions.Add(junction.Animal1.name + " " + junction.Animal1.Breed1.breed1 + " " + junction.approvalStatus);
                 }
@@ -125,7 +125,7 @@ namespace HumaneSociety
                 UserInterface.DisplayUserOptions("Several animals found");
                 UserInterface.DisplayAnimals(animals);
             }
-            else if(animals.Count == 0)
+            else if (animals.Count == 0)
             {
                 UserInterface.DisplayUserOptions("No animals found please try another search");
             }
@@ -139,7 +139,7 @@ namespace HumaneSociety
 
         private void CheckIfAccountComplete()
         {
-            if(client.homeSize == null || client.kids == null || client.income == null)
+            if (client.homeSize == null || client.kids == null || client.income == null)
             {
                 UserInterface.DisplayUserOptions("Account not complete, would you like to update your account?");
                 string input = UserInterface.GetUserInput();
@@ -206,7 +206,7 @@ namespace HumaneSociety
             UserInterface.DisplayUserOptions("Please enter your state (abbreviation or full state name");
             string state = UserInterface.GetUserInput();
             var states = Query.GetStates();
-            
+
             var stateNames = from territory in states select territory.name.ToLower();
             var stateAbrreviations = from territory in states select territory.abbrev;
             if (stateNames.ToList().Contains(state.ToLower()) || stateAbrreviations.ToList().Contains(state.ToUpper()))

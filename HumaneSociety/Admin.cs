@@ -32,17 +32,17 @@ namespace HumaneSociety
         }
         protected void RunInput(string input)
         {
-            if(input == "1" || input.ToLower() == "create")
+            if (input == "1" || input.ToLower() == "create")
             {
                 AddEmployee();
                 RunUserMenus();
             }
-            else if(input == "2" || input.ToLower() == "delete")
+            else if (input == "2" || input.ToLower() == "delete")
             {
                 RemoveEmployee();
                 RunUserMenus();
             }
-            else if(input == "3" || input.ToLower() == "read")
+            else if (input == "3" || input.ToLower() == "read")
             {
                 ReadEmployee();
                 RunUserMenus();
@@ -129,7 +129,7 @@ namespace HumaneSociety
                 Query.RunEmployeeQueries(employee, "create");
                 UserInterface.DisplayUserOptions("Employee addition successful.");
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine(e.StackTrace);
                 //Console.Clear();
@@ -137,6 +137,5 @@ namespace HumaneSociety
                 return;
             }
         }
-
     }
 }
